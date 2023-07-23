@@ -9,6 +9,14 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Open Car Stereo'),
       ),
+      body: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () => Navigator.pushNamed(context, '/player'),
+            child: const Text('Player'),
+          ),
+        ],
+      ),
     );
   }
 }
