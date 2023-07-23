@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ui/providers/player.dart';
 
-class PlayerPage extends StatelessWidget {
+class PlayerPage extends ConsumerWidget {
   const PlayerPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final player = ref.watch(playerProvider).value;
+
     return Scaffold(
       body: Column(
         children: [
           Text(
-            'Test Song',
+            player ?? '--',
             style: theme.textTheme.headlineLarge,
           ),
           Row(
