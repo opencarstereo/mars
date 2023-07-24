@@ -14,8 +14,9 @@ final bluetoothProvider = FutureProvider<BlueZClient>((ref) async {
 
   final client = BlueZClient();
   await client.connect();
-  final agent = OCSAgent(logger: logger);
+  await client.adapters[0].setAlias('Open Car Stereo');
 
+  final agent = OCSAgent(logger: logger);
   await client.registerAgent(agent);
   await client.requestDefaultAgent();
   logger.i("[Bluetooth]: Registered custom agent");
