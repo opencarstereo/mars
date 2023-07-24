@@ -6,6 +6,7 @@ import 'package:ui/providers/bluetooth.dart';
 final _bluetoothDevicesProvider =
     StreamProvider.autoDispose<List<BlueZDevice>>((ref) async* {
   final bluetooth = await ref.watch(bluetoothProvider.future);
+  await bluetooth.adapters[0].setDiscoverable(true);
 
   final devices = bluetooth.devices;
 
@@ -22,8 +23,10 @@ final _bluetoothDevicesProvider =
 
   final adapter = bluetooth.adapters[0];
 
-  ref.onDispose(() {
-    if (adapter.discovering) adapter.stopDiscovery();
+  ref.onDispose(() async {
+    if (adapter.discovering) await adapter.stopDiscovery();
+    await bluetooth.adapters[0].setDiscoverable(false);
+
     subAdd.cancel();
     subDel.cancel();
   });
@@ -54,6 +57,7 @@ class BluetoothSettingsPage extends ConsumerWidget {
             data: (data) => Expanded(
               child: ListView.builder(
                 itemBuilder: (context, i) => ListTile(
+                  onTap: () => data[i].pair(),
                   title: Text(
                     data[i].name,
                     style: TextStyle(
