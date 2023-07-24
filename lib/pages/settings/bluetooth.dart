@@ -1,26 +1,36 @@
+import 'package:bluez/bluez.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ui/providers/bluetooth.dart';
 
-final _bluetoothDevicesProvider = FutureProvider.autoDispose((ref) async {
+final _bluetoothDevicesProvider =
+    StreamProvider.autoDispose<List<BlueZDevice>>((ref) async* {
   final bluetooth = await ref.watch(bluetoothProvider.future);
 
   final devices = bluetooth.devices;
-  final subAdd = bluetooth.deviceAdded.listen((d) => devices.add(d));
+
+  final subAdd = bluetooth.deviceAdded.listen((d) {
+    devices.add(d);
+    ref.state = AsyncValue.data(devices);
+  });
   final subDel = bluetooth.deviceRemoved.listen(
-    (d) => devices.removeWhere((element) => element.address == d.address),
+    (d) {
+      devices.removeWhere((element) => element.address == d.address);
+      ref.state = AsyncValue.data(devices);
+    },
   );
 
   final adapter = bluetooth.adapters[0];
 
-  await adapter.startDiscovery();
-  await Future.delayed(const Duration(seconds: 5));
-  await adapter.stopDiscovery();
+  ref.onDispose(() {
+    if (adapter.discovering) adapter.stopDiscovery();
+    subAdd.cancel();
+    subDel.cancel();
+  });
 
-  subAdd.cancel();
-  subDel.cancel();
+  if (!adapter.discovering) await adapter.startDiscovery();
 
-  return devices;
+  yield devices;
 });
 
 class BluetoothSettingsPage extends ConsumerWidget {
@@ -32,19 +42,11 @@ class BluetoothSettingsPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bluetooth settings'),
-        actions: [
-          IconButton(
-            onPressed: () => !devices.isRefreshing
-                ? ref.refresh(_bluetoothDevicesProvider)
-                : null,
-            icon: const Icon(Icons.refresh),
-          )
-        ],
       ),
       body: Column(
         children: [
           Opacity(
-            opacity: devices.isRefreshing ? 1 : 0,
+            opacity: devices.hasValue ? 1 : 0,
             child: const LinearProgressIndicator(),
           ),
           devices.when(
@@ -57,7 +59,7 @@ class BluetoothSettingsPage extends ConsumerWidget {
                 itemCount: data.length,
               ),
             ),
-            error: (_, __) => const Text("Error"),
+            error: (e, s) => Text("Error: $e\n$s"),
             loading: () => const Center(
               child: CircularProgressIndicator(),
             ),
