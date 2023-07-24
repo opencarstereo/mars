@@ -15,6 +15,10 @@ class HomePage extends StatelessWidget {
             onPressed: () => Navigator.pushNamed(context, '/player'),
             child: const Text('Player'),
           ),
+          ElevatedButton(
+            onPressed: () => Navigator.pushNamed(context, '/settings'),
+            child: const Text('Settings'),
+          ),
         ],
       ),
     );

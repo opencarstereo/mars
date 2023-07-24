@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ui/pages/home.dart';
 import 'package:ui/pages/player.dart';
+import 'package:ui/pages/settings.dart';
+import 'package:ui/pages/settings/bluetooth.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -15,6 +17,8 @@ class App extends StatelessWidget {
         routes: {
           '/': (context) => const HomePage(),
           '/player': (context) => const PlayerPage(),
+          '/settings': (context) => const SettingsPage(),
+          '/settings/bluetooth': (context) => const BluetoothSettingsPage(),
         },
       ),
     );
