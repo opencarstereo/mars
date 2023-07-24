@@ -20,60 +20,63 @@ class PlayerWidget extends ConsumerWidget {
           width: 2.0,
         ),
       ),
-      child: Column(
-        children: [
-          Text(
-            player?.title ?? '--',
-            style: theme.textTheme.headlineLarge,
-          ),
-          Text(
-            player?.artist ?? '--',
-            style: theme.textTheme.titleLarge,
-          ),
-          const SizedBox(
-            height: 32,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                onPressed: () => ref.read(playerProvider.notifier).previous(),
-                icon: const Icon(
-                  Icons.skip_previous,
+      child: player == null
+          ? const Icon(Icons.music_off)
+          : Column(
+              children: [
+                Text(
+                  player.title ?? '--',
+                  style: theme.textTheme.headlineLarge,
                 ),
-              ),
-              const SizedBox(
-                width: 32,
-              ),
-              IconButton(
-                iconSize: 48,
-                onPressed: () {
-                  if (player?.status == PlayerStatus.playing) {
-                    ref.read(playerProvider.notifier).pause();
-                  } else if (player?.status == PlayerStatus.paused ||
-                      player?.status == PlayerStatus.stopped) {
-                    ref.read(playerProvider.notifier).play();
-                  }
-                },
-                icon: Icon(
-                  player?.status == PlayerStatus.playing
-                      ? Icons.pause
-                      : Icons.play_arrow,
+                Text(
+                  player.artist ?? '--',
+                  style: theme.textTheme.titleLarge,
                 ),
-              ),
-              const SizedBox(
-                width: 32,
-              ),
-              IconButton(
-                onPressed: () => ref.read(playerProvider.notifier).next(),
-                icon: const Icon(
-                  Icons.skip_next,
+                const SizedBox(
+                  height: 32,
                 ),
-              ),
-            ],
-          )
-        ],
-      ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () =>
+                          ref.read(playerProvider.notifier).previous(),
+                      icon: const Icon(
+                        Icons.skip_previous,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 32,
+                    ),
+                    IconButton(
+                      iconSize: 48,
+                      onPressed: () {
+                        if (player.status == PlayerStatus.playing) {
+                          ref.read(playerProvider.notifier).pause();
+                        } else if (player.status == PlayerStatus.paused ||
+                            player.status == PlayerStatus.stopped) {
+                          ref.read(playerProvider.notifier).play();
+                        }
+                      },
+                      icon: Icon(
+                        player.status == PlayerStatus.playing
+                            ? Icons.pause
+                            : Icons.play_arrow,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 32,
+                    ),
+                    IconButton(
+                      onPressed: () => ref.read(playerProvider.notifier).next(),
+                      icon: const Icon(
+                        Icons.skip_next,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
     );
   }
 }

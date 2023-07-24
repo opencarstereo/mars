@@ -2,21 +2,27 @@ import 'package:dbus/dbus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ui/models/player.dart';
 import 'package:ui/providers/bluetooth.dart';
+import 'package:ui/providers/logger.dart';
 
-final playerProvider = AsyncNotifierProvider<PlayerNotifier, Player>(() {
+final playerProvider = AsyncNotifierProvider<PlayerNotifier, Player?>(() {
   return PlayerNotifier();
 });
 
-class PlayerNotifier extends AsyncNotifier<Player> {
+class PlayerNotifier extends AsyncNotifier<Player?> {
   late DBusRemoteObject _object;
 
-  Future<Player> _getState() async {
-    final player = await _object.getAllProperties('org.bluez.MediaPlayer1');
-    return Player.fromDBus(player);
+  Future<Player?> _getState() async {
+    try {
+      final player = await _object.getAllProperties('org.bluez.MediaPlayer1');
+      return Player.fromDBus(player);
+    } catch (e) {
+      ref.read(loggerProvider).w("No player found");
+      return null;
+    }
   }
 
   @override
-  Future<Player> build() async {
+  Future<Player?> build() async {
     // Handle device swap. This will break
     final client = await ref.watch(bluetoothProvider.future);
     final device = 'dev_' + client.devices[0].address.replaceAll(':', '_');
