@@ -2,39 +2,52 @@ import 'package:bluez/bluez.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ui/providers/bluetooth.dart';
+import 'package:ui/providers/logger.dart';
 
-final _bluetoothDevicesProvider =
-    StreamProvider.autoDispose<List<BlueZDevice>>((ref) async* {
-  final bluetooth = await ref.watch(bluetoothProvider.future);
-  await bluetooth.adapters[0].setDiscoverable(true);
+final _bluetoothDevicesProvider = StreamProvider.autoDispose<List<BlueZDevice>>(
+  (ref) async* {
+    final bluetooth = await ref.watch(bluetoothProvider.future);
+    final logger = ref.read(loggerProvider);
 
-  final devices = bluetooth.devices;
+    final adapter = bluetooth.adapters[0];
 
-  final subAdd = bluetooth.deviceAdded.listen((d) {
-    devices.add(d);
-    ref.state = AsyncValue.data(devices);
-  });
-  final subDel = bluetooth.deviceRemoved.listen(
-    (d) {
-      devices.removeWhere((element) => element.address == d.address);
+    await bluetooth.adapters[0].setDiscoverable(true);
+    logger.i("[Bluetooth]: Device is now visible with name ${adapter.alias}");
+
+    final devices = bluetooth.devices;
+
+    final subAdd = bluetooth.deviceAdded.listen((d) {
+      devices.add(d);
       ref.state = AsyncValue.data(devices);
-    },
-  );
+    });
+    final subDel = bluetooth.deviceRemoved.listen(
+      (d) {
+        devices.removeWhere((element) => element.address == d.address);
+        ref.state = AsyncValue.data(devices);
+      },
+    );
 
-  final adapter = bluetooth.adapters[0];
+    ref.onDispose(() async {
+      if (adapter.discovering) await adapter.stopDiscovery();
+      await adapter.setDiscoverable(false);
+      logger.i("[Bluetooth]: Discovery of devices stopped");
 
-  ref.onDispose(() async {
-    if (adapter.discovering) await adapter.stopDiscovery();
-    await bluetooth.adapters[0].setDiscoverable(false);
+      subAdd.cancel();
+      subDel.cancel();
+    });
 
-    subAdd.cancel();
-    subDel.cancel();
-  });
+    if (!adapter.discovering) {
+      await adapter.startDiscovery();
+      logger.i("[Bluetooth]: Started discovery of devices");
+    } else {
+      logger.w(
+        "[Bluetooth]: Discovery of devices not started because was already running",
+      );
+    }
 
-  if (!adapter.discovering) await adapter.startDiscovery();
-
-  yield devices;
-});
+    yield devices;
+  },
+);
 
 class BluetoothSettingsPage extends ConsumerWidget {
   const BluetoothSettingsPage({super.key});
