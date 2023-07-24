@@ -39,6 +39,7 @@ class BluetoothSettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final devices = ref.watch(_bluetoothDevicesProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bluetooth settings'),
@@ -53,7 +54,12 @@ class BluetoothSettingsPage extends ConsumerWidget {
             data: (data) => Expanded(
               child: ListView.builder(
                 itemBuilder: (context, i) => ListTile(
-                  title: Text(data[i].name),
+                  title: Text(
+                    data[i].name,
+                    style: TextStyle(
+                      fontWeight: data[i].connected ? FontWeight.w600 : null,
+                    ),
+                  ),
                   subtitle: Text(data[i].address),
                 ),
                 itemCount: data.length,
