@@ -1,7 +1,7 @@
-import 'package:bluez/bluez.dart';
 import 'package:dbus/dbus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ui/models/player.dart';
+import 'package:ui/providers/bluetooth.dart';
 
 final playerProvider = AsyncNotifierProvider<PlayerNotifier, Player>(() {
   return PlayerNotifier();
@@ -18,8 +18,7 @@ class PlayerNotifier extends AsyncNotifier<Player> {
   @override
   Future<Player> build() async {
     // Handle device swap. This will break
-    final client = BlueZClient();
-    await client.connect();
+    final client = await ref.watch(bluetoothProvider.future);
     final device = 'dev_' + client.devices[0].address.replaceAll(':', '_');
 
     final service = DBusClient.system();
