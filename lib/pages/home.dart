@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ui/providers/bluetooth.dart';
 import 'package:ui/widgets/player.dart';
 import 'package:ui/widgets/widget_icon.dart';
 
@@ -9,8 +8,6 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.read(bluetoothProvider);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Open Car Stereo'),

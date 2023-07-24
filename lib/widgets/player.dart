@@ -54,7 +54,7 @@ class PlayerWidget extends ConsumerWidget {
                       width: 32,
                     ),
                     IconButton(
-                      iconSize: 48,
+                      iconSize: 64,
                       onPressed: () {
                         if (player.status == PlayerStatus.playing) {
                           ref.read(playerProvider.notifier).pause();

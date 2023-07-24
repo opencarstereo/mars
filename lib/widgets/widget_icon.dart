@@ -20,7 +20,7 @@ class WidgetIcon extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(5.0),
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(24.0),
           child: Icon(
             icon,
             size: 64,
