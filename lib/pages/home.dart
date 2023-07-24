@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ui/providers/bluetooth.dart';
 import 'package:ui/widgets/player.dart';
+import 'package:ui/widgets/widget_icon.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -17,15 +18,26 @@ class HomePage extends ConsumerWidget {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const PlayerWidget(),
-            ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, '/player'),
-              child: const Text('Player'),
+            const SizedBox(
+              height: 12,
             ),
-            ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, '/settings'),
-              child: const Text('Settings'),
+            Row(
+              children: [
+                WidgetIcon(
+                  icon: Icons.settings,
+                  onTap: () => Navigator.pushNamed(context, '/settings'),
+                ),
+                const SizedBox(
+                  width: 12,
+                ),
+                WidgetIcon(
+                  icon: Icons.music_note,
+                  onTap: () => Navigator.pushNamed(context, '/player'),
+                ),
+              ],
             ),
           ],
         ),

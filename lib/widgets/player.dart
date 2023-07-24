@@ -12,7 +12,7 @@ class PlayerWidget extends ConsumerWidget {
     final player = ref.watch(playerProvider).value;
 
     return Container(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(24.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5.0),
         border: Border.all(
@@ -21,7 +21,12 @@ class PlayerWidget extends ConsumerWidget {
         ),
       ),
       child: player == null
-          ? const Icon(Icons.music_off)
+          ? const Center(
+              child: Padding(
+                padding: EdgeInsets.all(12.0),
+                child: Icon(Icons.music_off),
+              ),
+            )
           : Column(
               children: [
                 Text(
