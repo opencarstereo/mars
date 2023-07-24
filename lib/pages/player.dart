@@ -9,10 +9,12 @@ class PlayerPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final player = ref.watch(playerProvider).value;
+    final bluetooth = ref.watch(devicesProvider).value;
 
     return Scaffold(
       body: Column(
         children: [
+          Text('Playing from: ${bluetooth?[0].name ?? '--'}'),
           Text(
             player ?? '--',
             style: theme.textTheme.headlineLarge,
