@@ -38,6 +38,7 @@ dependencies:
   flutter_riverpod: ^2.3.6
   dbus: ^0.7.8
   bluez: ^0.8.1
+  logger: ^1.4.0
 
 dev_dependencies:
   flutter_test:
