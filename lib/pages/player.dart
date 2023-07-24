@@ -13,6 +13,7 @@ class PlayerPage extends ConsumerWidget {
 
     return Scaffold(
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             player?.title ?? '--',
@@ -22,14 +23,23 @@ class PlayerPage extends ConsumerWidget {
             player?.artist ?? '--',
             style: theme.textTheme.titleLarge,
           ),
+          const SizedBox(
+            height: 32,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
                 onPressed: () => ref.read(playerProvider.notifier).previous(),
-                icon: const Icon(Icons.skip_previous),
+                icon: const Icon(
+                  Icons.skip_previous,
+                ),
+              ),
+              const SizedBox(
+                width: 32,
               ),
               IconButton(
+                iconSize: 48,
                 onPressed: () {
                   if (player?.status == PlayerStatus.playing) {
                     ref.read(playerProvider.notifier).pause();
@@ -44,9 +54,14 @@ class PlayerPage extends ConsumerWidget {
                       : Icons.play_arrow,
                 ),
               ),
+              const SizedBox(
+                width: 32,
+              ),
               IconButton(
                 onPressed: () => ref.read(playerProvider.notifier).next(),
-                icon: const Icon(Icons.skip_next),
+                icon: const Icon(
+                  Icons.skip_next,
+                ),
               ),
             ],
           )

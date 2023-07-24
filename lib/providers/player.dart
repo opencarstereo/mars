@@ -17,6 +17,7 @@ class PlayerNotifier extends AsyncNotifier<Player> {
 
   @override
   Future<Player> build() async {
+    // Handle device swap. This will break
     final client = BlueZClient();
     await client.connect();
     final device = 'dev_' + client.devices[0].address.replaceAll(':', '_');
