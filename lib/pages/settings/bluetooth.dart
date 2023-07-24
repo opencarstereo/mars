@@ -29,23 +29,40 @@ class BluetoothSettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final devices = ref.watch(_bluetoothDevicesProvider);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bluetooth settings'),
+        actions: [
+          IconButton(
+            onPressed: () => !devices.isRefreshing
+                ? ref.refresh(_bluetoothDevicesProvider)
+                : null,
+            icon: const Icon(Icons.refresh),
+          )
+        ],
       ),
-      body: devices.when(
-        data: (data) => ListView.builder(
-          itemBuilder: (context, i) => ListTile(
-            title: Text(data[i].name),
-            subtitle: Text(data[i].address),
+      body: Column(
+        children: [
+          Opacity(
+            opacity: devices.isRefreshing ? 1 : 0,
+            child: const LinearProgressIndicator(),
           ),
-          itemCount: data.length,
-        ),
-        error: (_, __) => const Text("Error"),
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
+          devices.when(
+            data: (data) => Expanded(
+              child: ListView.builder(
+                itemBuilder: (context, i) => ListTile(
+                  title: Text(data[i].name),
+                  subtitle: Text(data[i].address),
+                ),
+                itemCount: data.length,
+              ),
+            ),
+            error: (_, __) => const Text("Error"),
+            loading: () => const Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        ],
       ),
     );
   }

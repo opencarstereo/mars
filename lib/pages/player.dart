@@ -12,6 +12,7 @@ class PlayerPage extends ConsumerWidget {
     final player = ref.watch(playerProvider).value;
 
     return Scaffold(
+      appBar: AppBar(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
