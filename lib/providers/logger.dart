@@ -3,6 +3,7 @@ import 'package:logger/logger.dart';
 
 final loggerProvider = Provider<Logger>(
   (ref) => Logger(
+    filter: ProductionFilter(),
     printer: SimplePrinter(),
   ),
 );
