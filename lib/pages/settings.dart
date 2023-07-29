@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -15,6 +17,11 @@ class SettingsPage extends StatelessWidget {
             title: const Text('Bluetooth'),
             subtitle: const Text('View and manage bluetooth devices'),
             onTap: () => Navigator.pushNamed(context, '/settings/bluetooth'),
+          ),
+          ListTile(
+            title: const Text('Exit'),
+            subtitle: const Text('Quit from mars and return to tty'),
+            onTap: () => exit(0),
           )
         ],
       ),
