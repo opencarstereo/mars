@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
@@ -24,6 +25,10 @@ void main(List<String> args) {
 
   if (!res['verbose']) {
     Logger.level = Level.error;
+  }
+
+  if(kDebugMode) {
+    Logger.level = Level.debug;
   }
 
   runApp(const ProviderScope(child: App()));
