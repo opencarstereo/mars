@@ -28,13 +28,6 @@ class HomePage extends ConsumerWidget {
                 width: 12,
               ),
               WidgetIcon(
-                icon: Icons.music_note,
-                onTap: () => Navigator.pushNamed(context, '/player'),
-              ),
-              const SizedBox(
-                width: 12,
-              ),
-              WidgetIcon(
                 icon: Icons.volume_up,
                 onTap: () => ref.read(volumeProvider.notifier).updateVolume(),
               )

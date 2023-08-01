@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ui/common/status_bar.dart';
 import 'package:ui/common/volume_slider.dart';
 import 'package:ui/pages/home.dart';
-import 'package:ui/pages/player.dart';
 import 'package:ui/pages/settings.dart';
 import 'package:ui/pages/settings/bluetooth.dart';
 import 'package:ui/providers/bluetooth.dart';
@@ -21,7 +20,6 @@ class App extends StatelessWidget {
         theme: ThemeData.dark(useMaterial3: false),
         routes: {
           '/': (context) => const HomePage(),
-          '/player': (context) => const PlayerPage(),
           '/settings': (context) => const SettingsPage(),
           '/settings/bluetooth': (context) => const BluetoothSettingsPage(),
         },
