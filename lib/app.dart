@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ui/common/status_bar.dart';
 import 'package:ui/pages/home.dart';
 import 'package:ui/pages/player.dart';
 import 'package:ui/pages/settings.dart';
@@ -13,6 +14,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProviderScope(
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         navigatorKey: navigatorKey,
         title: 'Open Car Stereo',
         theme: ThemeData.dark(useMaterial3: false),
@@ -22,6 +24,10 @@ class App extends StatelessWidget {
           '/settings': (context) => const SettingsPage(),
           '/settings/bluetooth': (context) => const BluetoothSettingsPage(),
         },
+        builder: (context, child) => Scaffold(
+          appBar: const StatusBar(),
+          body: child,
+        ),
       ),
     );
   }
