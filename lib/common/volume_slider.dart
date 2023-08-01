@@ -153,10 +153,20 @@ class _VolumePainter extends CustomPainter {
     final width = size.width * volume;
     final paint = Paint()
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = 10.0
-      ..color = Colors.blue.shade400;
+      ..strokeWidth = 10.0;
 
-    canvas.drawLine(Offset.zero, Offset(width, 0), paint);
+    // Trace
+    canvas.drawLine(
+      Offset.zero,
+      Offset(size.width, 0),
+      paint..color = Colors.black26,
+    );
+    // Thumb
+    canvas.drawLine(
+      Offset.zero,
+      Offset(width, 0),
+      paint..color = Colors.blue.shade400,
+    );
   }
 
   @override
