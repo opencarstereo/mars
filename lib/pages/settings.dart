@@ -24,6 +24,14 @@ class SettingsPage extends StatelessWidget {
             onTap: () => Navigator.pushNamed(context, '/settings/debug'),
           ),
           ListTile(
+            title: const Text('Licenses'),
+            subtitle: const Text('Show licenses of libraries and tools used'),
+            onTap: () => showLicensePage(
+              context: context,
+              applicationName: "Open Car Stereo - Mars",
+            ),
+          ),
+          ListTile(
             title: const Text('Exit'),
             subtitle: const Text('Quit from mars and return to tty'),
             onTap: () => exit(0),
