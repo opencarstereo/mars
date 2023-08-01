@@ -11,15 +11,8 @@ class PlayerWidget extends ConsumerWidget {
     final theme = Theme.of(context);
     final player = ref.watch(playerProvider).value;
 
-    return Container(
+    return Padding(
       padding: const EdgeInsets.all(24.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5.0),
-        border: Border.all(
-          color: Colors.white24,
-          width: 2.0,
-        ),
-      ),
       child: player == null
           ? const Center(
               child: Padding(
