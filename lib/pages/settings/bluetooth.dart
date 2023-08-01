@@ -54,6 +54,7 @@ class BluetoothSettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final bluetooth = ref.watch(bluetoothProvider);
     final devices = ref.watch(_bluetoothDevicesProvider);
 
     return Scaffold(
@@ -68,18 +69,35 @@ class BluetoothSettingsPage extends ConsumerWidget {
           ),
           devices.when(
             data: (data) => Expanded(
-              child: ListView.builder(
-                itemBuilder: (context, i) => ListTile(
-                  onTap: () => data[i].pair(),
-                  title: Text(
-                    data[i].name,
-                    style: TextStyle(
-                      fontWeight: data[i].connected ? FontWeight.w600 : null,
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 10.0,
+                      ),
+                      child: Text(
+                        "Device is now visible as " +
+                            (bluetooth.value?.adapters[0].alias ?? '--'),
+                      ),
                     ),
                   ),
-                  subtitle: Text(data[i].address),
-                ),
-                itemCount: data.length,
+                  SliverList.builder(
+                    itemBuilder: (context, i) => ListTile(
+                      onTap: () => data[i].pair(),
+                      title: Text(
+                        data[i].name,
+                        style: TextStyle(
+                          fontWeight:
+                              data[i].connected ? FontWeight.w600 : null,
+                        ),
+                      ),
+                      subtitle: Text(data[i].address),
+                    ),
+                    itemCount: data.length,
+                  ),
+                ],
               ),
             ),
             error: (e, s) => Text("Error: $e\n$s"),
