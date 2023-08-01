@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ui/providers/volume.dart';
 import 'package:ui/widgets/player.dart';
 import 'package:ui/widgets/widget_icon.dart';
 
@@ -30,6 +31,13 @@ class HomePage extends ConsumerWidget {
                 icon: Icons.music_note,
                 onTap: () => Navigator.pushNamed(context, '/player'),
               ),
+              const SizedBox(
+                width: 12,
+              ),
+              WidgetIcon(
+                icon: Icons.volume_up,
+                onTap: () => ref.read(volumeProvider.notifier).updateVolume(),
+              )
             ],
           ),
         ],

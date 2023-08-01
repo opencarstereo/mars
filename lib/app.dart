@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ui/common/status_bar.dart';
+import 'package:ui/common/volume_slider.dart';
 import 'package:ui/pages/home.dart';
 import 'package:ui/pages/player.dart';
 import 'package:ui/pages/settings.dart';
@@ -24,10 +25,20 @@ class App extends StatelessWidget {
           '/settings': (context) => const SettingsPage(),
           '/settings/bluetooth': (context) => const BluetoothSettingsPage(),
         },
-        builder: (context, child) => Scaffold(
-          appBar: const StatusBar(),
-          body: child,
-        ),
+        builder: (context, child) {
+          // Flutter place the builder on top of the Overlay witget, so it can't
+          // be reached from up here.
+          return Scaffold(
+            appBar: const StatusBar(),
+            body: Overlay(
+              initialEntries: [
+                OverlayEntry(
+                  builder: (context) => VolumeListenerOverlay(child: child!),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
