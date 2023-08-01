@@ -28,12 +28,14 @@ class App extends StatelessWidget {
           // be reached from up here.
           return Scaffold(
             appBar: const StatusBar(),
-            body: Overlay(
-              initialEntries: [
-                OverlayEntry(
-                  builder: (context) => VolumeListenerOverlay(child: child!),
-                ),
-              ],
+            body: CheckedModeBanner(
+              child: Overlay(
+                initialEntries: [
+                  OverlayEntry(
+                    builder: (context) => VolumeListenerOverlay(child: child!),
+                  ),
+                ],
+              ),
             ),
           );
         },
