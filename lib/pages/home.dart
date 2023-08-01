@@ -14,9 +14,9 @@ class HomePage extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
-            height: 12,
-          ),
+          const Spacer(),
+          const PlayerWidget(),
+          const Spacer(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -33,9 +33,9 @@ class HomePage extends ConsumerWidget {
               )
             ],
           ),
-          const Spacer(),
-          const PlayerWidget(),
-          const Spacer(),
+          const SizedBox(
+            height: 12,
+          ),
         ],
       ),
     );
