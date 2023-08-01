@@ -19,6 +19,11 @@ class SettingsPage extends StatelessWidget {
             onTap: () => Navigator.pushNamed(context, '/settings/bluetooth'),
           ),
           ListTile(
+            title: const Text('Debug'),
+            subtitle: const Text('Super secret settings page'),
+            onTap: () => Navigator.pushNamed(context, '/settings/debug'),
+          ),
+          ListTile(
             title: const Text('Exit'),
             subtitle: const Text('Quit from mars and return to tty'),
             onTap: () => exit(0),
