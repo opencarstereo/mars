@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dbus/dbus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ui/models/player.dart';
@@ -10,6 +12,7 @@ final playerProvider = AsyncNotifierProvider<PlayerNotifier, Player?>(() {
 
 class PlayerNotifier extends AsyncNotifier<Player?> {
   late DBusRemoteObject _object;
+  StreamSubscription<DBusPropertiesChangedSignal>? _subscription;
 
   Future<Player?> _getState() async {
     try {
@@ -23,6 +26,8 @@ class PlayerNotifier extends AsyncNotifier<Player?> {
 
   @override
   Future<Player?> build() async {
+    ref.onDispose(_dispose);
+
     // Handle device swap. This will break
     final client = await ref.watch(bluetoothProvider.future);
     final device = 'dev_' + client.devices[0].address.replaceAll(':', '_');
@@ -36,11 +41,15 @@ class PlayerNotifier extends AsyncNotifier<Player?> {
       ),
     );
 
-    _object.propertiesChanged.listen((_) async {
+    _subscription = _object.propertiesChanged.listen((_) async {
       state = await AsyncValue.guard(() => _getState());
     });
 
     return _getState();
+  }
+
+  void _dispose() {
+    _subscription?.cancel();
   }
 
   Future<void> pause() {
