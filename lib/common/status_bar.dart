@@ -12,7 +12,7 @@ class StatusBar extends ConsumerWidget implements PreferredSizeWidget {
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 14.0),
-      decoration: const BoxDecoration(color: Color(0xFF161616)),
+      decoration: const BoxDecoration(color: Color(0xFF000000)),
       child: Row(
         children: [
           const Spacer(),

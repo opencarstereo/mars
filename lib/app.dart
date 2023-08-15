@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ui/common/fake_pixel_ratio.dart';
 import 'package:ui/common/status_bar.dart';
 import 'package:ui/common/volume_slider.dart';
