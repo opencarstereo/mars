@@ -41,6 +41,9 @@ dependencies:
   logger: ^1.4.0
   args: ^2.4.2
   intl: ^0.18.1
+  flutter_volume_controller:
+    git:
+      url: https://github.com/opencarstereo/flutter_volume_controller.git
 
 dev_dependencies:
   flutter_test:

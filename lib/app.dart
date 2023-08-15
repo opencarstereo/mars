@@ -14,37 +14,34 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProviderScope(
-      child: FakeDevicePixelRatio(
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          navigatorKey: navigatorKey,
-          title: 'Open Car Stereo',
-          theme: ThemeData.dark(useMaterial3: false),
-          routes: {
-            '/': (context) => const HomePage(),
-            '/settings': (context) => const SettingsPage(),
-            '/settings/bluetooth': (context) => const BluetoothSettingsPage(),
-            '/settings/debug': (context) => const DebugSettingsPage(),
-          },
-          builder: (context, child) {
-            // Flutter place the builder on top of the Overlay witget, so it can't
-            // be reached from up here.
-            return Scaffold(
-              appBar: const StatusBar(),
-              body: CheckedModeBanner(
-                child: Overlay(
-                  initialEntries: [
-                    OverlayEntry(
-                      builder: (context) =>
-                          VolumeListenerOverlay(child: child!),
-                    ),
-                  ],
-                ),
+    return FakeDevicePixelRatio(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        navigatorKey: navigatorKey,
+        title: 'Open Car Stereo',
+        theme: ThemeData.dark(useMaterial3: false),
+        routes: {
+          '/': (context) => const HomePage(),
+          '/settings': (context) => const SettingsPage(),
+          '/settings/bluetooth': (context) => const BluetoothSettingsPage(),
+          '/settings/debug': (context) => const DebugSettingsPage(),
+        },
+        builder: (context, child) {
+          // Flutter place the builder on top of the Overlay witget, so it can't
+          // be reached from up here.
+          return Scaffold(
+            appBar: const StatusBar(),
+            body: CheckedModeBanner(
+              child: Overlay(
+                initialEntries: [
+                  OverlayEntry(
+                    builder: (context) => VolumeListenerOverlay(child: child!),
+                  ),
+                ],
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
