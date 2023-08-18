@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ui/providers/volume.dart';
 import 'package:ui/widgets/player.dart';
+import 'package:ui/widgets/speedometer.dart';
 import 'package:ui/widgets/widget_icon.dart';
 
 class HomePage extends ConsumerWidget {
@@ -15,7 +16,25 @@ class HomePage extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Spacer(),
-          const PlayerWidget(),
+          const Flex(
+            direction: Axis.horizontal,
+            children: [
+              Flexible(
+                flex: 1,
+                child: Center(
+                  child: SizedBox(
+                    width: 400,
+                    height: 400,
+                    child: SpeedometerWidget(),
+                  ),
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: PlayerWidget(),
+              )
+            ],
+          ),
           const Spacer(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
