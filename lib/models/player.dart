@@ -12,15 +12,15 @@ class Player {
   });
 
   factory Player.fromDBus(Map<String, DBusValue> data) {
-    final track = data['Track']!.asStringVariantDict();
-    final title = track['Title']!.asString();
-    final artist = track['Artist']!.asString();
-    final status = data['Status']!.asString();
+    final metadata = data['Metadata']!.asStringVariantDict();
+    final title = metadata['xesam:title']!.asString();
+    final artist = metadata['xesam:artist']!.asStringArray().join(', ');
+    final status = data['PlaybackStatus']!.asString();
 
     return Player(
       title: title,
       artist: artist,
-      status: PlayerStatus.values.byName(status),
+      status: PlayerStatus.values.byName(status.toLowerCase()),
     );
   }
 }

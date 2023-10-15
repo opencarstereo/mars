@@ -25,6 +25,7 @@ class PlayerWidget extends ConsumerWidget {
                 Text(
                   player.title ?? '--',
                   style: theme.textTheme.headlineLarge,
+                  textAlign: TextAlign.center,
                 ),
                 Text(
                   player.artist ?? '--',

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:dbus/dbus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ui/models/player.dart';
-import 'package:ui/providers/bluetooth.dart';
 import 'package:ui/providers/logger.dart';
 
 final playerProvider = AsyncNotifierProvider<PlayerNotifier, Player?>(() {
@@ -16,9 +15,12 @@ class PlayerNotifier extends AsyncNotifier<Player?> {
 
   Future<Player?> _getState() async {
     try {
-      final player = await _object.getAllProperties('org.bluez.MediaPlayer1');
+      final player = await _object.getAllProperties(
+        'org.mpris.MediaPlayer2.Player',
+      );
       return Player.fromDBus(player);
     } catch (e) {
+      ref.read(loggerProvider).e(e);
       ref.read(loggerProvider).w("No player found");
       return null;
     }
@@ -28,16 +30,13 @@ class PlayerNotifier extends AsyncNotifier<Player?> {
   Future<Player?> build() async {
     ref.onDispose(_dispose);
 
-    // Handle device swap. This will break
-    final client = await ref.watch(bluetoothProvider.future);
-    final device = 'dev_' + client.devices[0].address.replaceAll(':', '_');
+    final service = DBusClient.session();
 
-    final service = DBusClient.system();
     _object = DBusRemoteObject(
       service,
-      name: 'org.bluez',
+      name: 'org.mpris.MediaPlayer2.playerctld',
       path: DBusObjectPath(
-        '/org/bluez/hci0/$device/player0',
+        '/org/mpris/MediaPlayer2',
       ),
     );
 
@@ -53,18 +52,18 @@ class PlayerNotifier extends AsyncNotifier<Player?> {
   }
 
   Future<void> pause() {
-    return _object.callMethod('org.bluez.MediaPlayer1', 'Pause', {});
+    return _object.callMethod('org.mpris.MediaPlayer2.Player', 'Pause', {});
   }
 
   Future<void> play() {
-    return _object.callMethod('org.bluez.MediaPlayer1', 'Play', {});
+    return _object.callMethod('org.mpris.MediaPlayer2.Player', 'Play', {});
   }
 
   Future<void> previous() {
-    return _object.callMethod('org.bluez.MediaPlayer1', 'Previous', {});
+    return _object.callMethod('org.mpris.MediaPlayer2.Player', 'Previous', {});
   }
 
   Future<void> next() {
-    return _object.callMethod('org.bluez.MediaPlayer1', 'Next', {});
+    return _object.callMethod('org.mpris.MediaPlayer2.Player', 'Next', {});
   }
 }
